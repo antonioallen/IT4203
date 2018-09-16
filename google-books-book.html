@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Books Book</title>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h4 {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h5 {
+            padding: 0px;
+            margin: 0px;
+            display: inline;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $.getJSON("json/google-books-book.json", function(data) {
+                let book = data
+                //Set Values for Book Object
+                $("#book_title").text(book.volumeInfo.title)
+                $("#book_subtitle").text(book.volumeInfo.subtitle)
+                $("#book_author").text(book.volumeInfo.authors[0])
+                $("#book_press").text(book.volumeInfo.publisher)
+                $("#book_rating").text(book.volumeInfo.averageRating)
+                $("#book_pages").text(book.volumeInfo.pageCount)
+                $("#book_reviews").text(book.volumeInfo.ratingsCount)
+                $("#book_image").attr('src',book.volumeInfo.imageLinks.small)
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <h1 id="book_title"></h1>
+    <h3 id="book_subtitle"></h3>
+    <div>
+        <img id="book_image" style="float: left; padding-right: 10px;" src="">
+        <div>
+            <h4>Author:
+                <h5 id="book_author" style="display: inline;"></h5>
+            </h4>
+            <h4>Press:
+                <h5 id="book_press" style="display: inline;"></h5>
+            </h4>
+            <h4>Rating:
+                <h5 id="book_rating" style="display: inline;"></h5>
+            </h4>
+            <h4>Pages:
+                <h5 id="book_pages" style="display: inline;"></h5>
+            </h4>
+            <h4>Reviews:
+                <h5 id="book_reviews" style="display: inline;"></h5>
+            </h4>
+        </div>
+    </div>
+
+    <div style="clear: both;"></div>
+    
+    <div>
+        <h3><a href="milstone1.html">Back</a></h3>
+    </div>
+</body>
+
+</html>

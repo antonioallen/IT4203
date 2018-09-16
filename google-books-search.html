@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Books Search</title>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h4 {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h5 {
+            padding: 0px;
+            margin: 0px;
+            display: inline;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+    </style>
+
+
+    <script>
+        $(document).ready(function() {
+            $.getJSON("json/google-books-search.json", function(data) {
+                let books = data.items
+                var bodyText = ""
+                
+                books.forEach(addBook)
+
+                function addBook(book) {
+                    console.log("Book" + book.volumeInfo.title)
+                    var html = `
+<li>
+<div>
+        <h1 id="book_title">${book.volumeInfo.title}</h1>
+        <h3 id="book_subtitle">${book.volumeInfo.subtitle}</h3>
+        <div>
+            <img id="book_image" style="float: left; padding-right: 10px;" src="${book.volumeInfo.imageLinks.thumbnail}">
+            <div>
+                <h4>Author:
+                    <h5 id="book_author" style="display: inline;">${book.volumeInfo.authors[0]}</h5>
+                </h4>
+                <h4>Press:
+                    <h5 id="book_press" style="display: inline;">${book.volumeInfo.publisher}</h5>
+                </h4>
+                <h4>Rating:
+                    <h5 id="book_rating" style="display: inline;">${book.volumeInfo.averageRating}</h5>
+                </h4>
+                <h4>Pages:
+                    <h5 id="book_pages" style="display: inline;">${book.volumeInfo.pageCount}</h5>
+                </h4>
+                <h4>Reviews:
+                    <h5 id="book_reviews" style="display: inline;">${book.volumeInfo.ratingsCount}</h5>
+                </h4>
+            </div>
+        </div>
+
+</div>
+<div style="clear: both;"></div>
+</li>
+`
+                    bodyText += html
+                }
+
+                //Set Values for Book Object
+                document.getElementById("list").innerHTML = bodyText
+            });
+        });
+    </script>
+
+</head>
+
+<body id="body">
+
+    <ul id="list">
+
+    </ul>
+    
+    
+    <div>
+        <h3><a href="milstone1.html">Back</a></h3>
+    </div>
+    
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Open Library Search</title>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h4 {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h5 {
+            padding: 0px;
+            margin: 0px;
+            display: inline;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
+
+
+    <script>
+        $(document).ready(function() {
+            $.getJSON("json/openlibrary-search.json", function(data) {
+                let books = data.docs
+                var bodyText = ""
+
+                books.forEach(addBook)
+
+                function addBook(book) {
+                    var html = `
+<li>
+    <div>    
+        <h1 id="book_title">${book.title}</h1>
+        <h4>ISBN:
+            <h5 id="book_isbn" style="display: inline;">${book.isbn[0]}</h5>
+        </h4>
+        <h4>Publisher:
+            <h5 id="book_isbn" style="display: inline;">${book.publisher[0]}</h5>
+        </h4>
+        <h4>Publish Year:
+            <h5 id="book_isbn" style="display: inline;">${book.publish_year[0]}</h5>
+        </h4>
+    </div>
+</li>
+`
+                    bodyText += html
+                }
+
+                //Set Values for Book Object
+                document.getElementById("list").innerHTML = bodyText
+            });
+        });
+    </script>
+
+</head>
+
+<body id="body">
+
+    <ul id="list">
+
+    </ul>
+
+    <div style="clear: both;"></div>
+    
+    <div>
+        <h3><a href="milstone1.html">Back</a></h3>
+    </div>
+
+</body>
+
+</html>

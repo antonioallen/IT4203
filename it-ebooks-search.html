@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>IT Ebooks Books Search</title>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h4 {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h5 {
+            padding: 0px;
+            margin: 0px;
+            display: inline;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
+
+
+    <script>
+        $(document).ready(function() {
+            $.getJSON("json/it-ebooks-search.json", function(data) {
+                let books = data.Books
+                var bodyText = ""
+
+                books.forEach(addBook)
+
+                function addBook(book) {
+                    var html = `
+<li>
+<div>
+        <h1 id="book_title">${book.Title}</h1>
+        <h3 id="book_subtitle">${book.SubTitle}</h3>
+        <div>
+            <img id="book_image" style="float: left; padding-right: 10px;" src="${book.Image}">
+            <div>
+                <h4>Rating:
+                    <h5 id="book_id" style="display: inline;">${book.ID}</h5>
+                </h4>
+                <h4>Author:
+                    <h5 id="book_isbn" style="display: inline;">${book.isbn}</h5>
+                </h4>
+                <h4>Press:
+                    <h5 id="book_description" style="display: inline;">${book.Description}</h5>
+                </h4>
+            </div>
+        </div>
+<div style="clear: both;"></div>
+</div>
+
+</li>
+`
+                    bodyText += html
+                }
+
+                //Set Values for Book Object
+                document.getElementById("list").innerHTML = bodyText
+            });
+        });
+    </script>
+
+</head>
+
+<body id="body">
+
+    <ul id="list">
+
+    </ul>
+    
+    <div>
+        <h3><a href="milstone1.html">Back</a></h3>
+    </div>
+    
+</body>
+
+</html>
