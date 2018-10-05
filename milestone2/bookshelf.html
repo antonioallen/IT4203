@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Bookshelf</title>
+
+    <script>
+        const API_KEY = "AIzaSyCUOUHbK3XmY7omwP3T5XLQHFugnnv1DzA";
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "https://www.googleapis.com/books/v1/users/102974264965783572017/bookshelves/1001/volumes",
+                type: "GET",
+                data: {
+                    key: API_KEY
+                }
+            }).done(function(data) {
+                if (data) {
+                    let totalItems = data.totalItems;
+                    let items = data.items;
+                    console.log(data);
+                    addBooks(items)
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function addBooks(items) {
+            var sectionContent = ""
+            items.forEach(function(item) {
+                var html = `
+        <div class="bookListItem">
+            <div class="bookImageBox">
+                <img class="bookImage" src="${("imageLinks" in item.volumeInfo) ? item.volumeInfo.imageLinks.thumbnail : "" }" alt="book-image">
+            </div>
+            <a href="book_details.html?id=${item.id}">
+                <h2>${item.volumeInfo.title}</h2>
+            </a>
+            <p>${("authors" in item.volumeInfo) ? item.volumeInfo.authors[0] : ""}</p>
+            <p>${("publisher" in item.volumeInfo) ? item.volumeInfo.publisher : ""}</p>
+            <p>${("pageCount" in item.volumeInfo) ? item.volumeInfo.pageCount : "0"} pages</p>
+        </div>
+`
+                sectionContent += html
+            })
+
+            //Set Values for Book Object
+            document.getElementById("searchContent").innerHTML = sectionContent
+        }
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li class="logo">Milestone 2</li>
+                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="bookshelf.html">My Bookshelf</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h2>My Bookshelf</h2>
+
+    <section id="searchContent">
+
+    </section>
+
+    <footer>
+        <p>Milestone 2 - Antonio Allen</p>
+    </footer>
+
+</body>
+
+</html>

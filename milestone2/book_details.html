@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Details</title>
+
+    <script>
+        const API_KEY = "AIzaSyCUOUHbK3XmY7omwP3T5XLQHFugnnv1DzA";
+        var bookId = "";
+        var currentSearchLimit = 0;
+        var resultsPerPage = 10;
+        var previousSearch = ""
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var url = new URL(window.location.href);
+            bookId = url.searchParams.get("id");
+            console.log("Getting book for id: " + bookId);
+            if (bookId) {
+                $.ajax({
+                    url: "https://www.googleapis.com/books/v1/volumes/" + bookId,
+                    type: "GET",
+                    data: {
+                        key: API_KEY
+                    }
+                }).done(function(data) {
+                    if (data) {
+                        console.log(data);
+
+                        $("#title").text(data.volumeInfo.title)
+                        $("#author").text(data.volumeInfo.authors[0])
+                        $("#publisher").text(data.volumeInfo.publisher)
+                        $("#description").text(data.volumeInfo.description)
+                        $("#rating").text(data.volumeInfo.averageRating)
+                        $("#pages").text(data.volumeInfo.pageCount+" pages")
+                        $("#book_image").attr('src', ("imageLinks" in data.volumeInfo) ? data.volumeInfo.imageLinks.thumbnail : "")
+
+                    }
+                });
+            }
+        });
+
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li class="logo">Milestone 2</li>
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="bookshelf.html">My Bookshelf</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+
+
+    </section>
+
+    <section>
+
+        <div class="bookContent">
+            <img class="bookImage" id="book_image" src="" alt="book-image">
+
+            <h2 id="title"></h2>
+            <h4 id="author"></h4>
+            <p id="description"></p>
+            <p id="publisher"></p>
+            <p id="rating"></p>
+            <p id="pages"></p>
+        </div>
+
+    </section>
+
+    <a href="index.html">Go Back</a>
+
+    <footer>
+        <p>Milestone 2 - Antonio Allen</p>
+    </footer>
+
+</body>
+
+</html>
