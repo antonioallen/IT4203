@@ -82,6 +82,52 @@ a {
     max-height: 100%;
 }
 
+.contentContainer {
+    width: 50%;
+    float: left;
+}
+
 .bookContent {
     padding: 20px;
+}
+
+body {
+  margin:0; /*gets rid of white space around body*/
+  margin-top:16px;
+  position:relative; /*REQUIRED Sets up positioning for your footer*/
+}
+
+.resultRightImage {
+    width: 15%;
+    padding: 25px;
+    float: left;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.resultsDescription {
+    max-height: 150px;
+}
+
+#resultsBar {
+  width:100%;
+  background:WHITE;
+  position:fixed; 
+  bottom:0;
+  left:0;
+    box-shadow: 0px -3px 12px rgba(0, 0, 0, 0.3);
+}
+
+.paging-options {
+  width: 100%;
+  text-align: center;
+}
+
+
+#pageNumberOptions{
+   display: inline-block;
 }

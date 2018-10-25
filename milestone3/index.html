@@ -1,0 +1,287 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Home</title>
+
+    <script>
+        const API_KEY = "AIzaSyCUOUHbK3XmY7omwP3T5XLQHFugnnv1DzA";
+        var currentSearchIndex = 0;
+        var currentPage = 0;
+        var currentSearchLimit = 0;
+        var resultsPerPage = 10;
+        var previousSearch = ""
+    </script>
+
+
+    <script>
+        //Handle select element on change
+        function onPageAmountChange(object) {
+            resultsPerPage = parseInt(object.value);
+            if (previousSearch != "") {
+                performSearch(previousSearch)
+            }
+        }
+
+        function previousPage() {
+            currentSearchIndex = ((currentSearchIndex - (resultsPerPage * 2)) >= 0) ? currentSearchIndex - (resultsPerPage * 2) : 0;
+            if (previousSearch != "") {
+                performSearch(previousSearch)
+            }
+        }
+
+        function nextPage() {
+            currentSearchLimit = ((currentSearchIndex + resultsPerPage) < currentSearchLimit) ? currentSearchIndex + resultsPerPage : currentSearchLimit;
+            if (previousSearch != "") {
+                performSearch(previousSearch)
+            }
+        }
+
+        function navigateToPage(page) {
+            currentPage = page
+            currentSearchIndex = currentPage * resultsPerPage
+            console.log("Current Search Index: " + currentSearchIndex)
+            if (previousSearch != "") {
+                performSearch(previousSearch)
+            }
+        }
+
+        function performSearch(searchText) {
+            var resultElement = document.getElementById("searchResult");
+            var currentPageElement = document.getElementById("currentPage");
+
+            if (searchText == "") {
+                alert("Please enter a search text");
+                return;
+            }
+
+            console.log("Search: " + searchText)
+            console.log("Current Index: " + currentSearchIndex)
+            console.log("Results Per Page: " + resultsPerPage)
+
+            resultElement.innerHTML = "Searching for " + searchText + "...";
+            currentPageElement.innerHTML = "Current Page: " + (currentPage + 1);
+
+            $.ajax({
+                url: "https://www.googleapis.com/books/v1/volumes",
+                type: "GET",
+                data: {
+                    q: searchText,
+                    key: API_KEY,
+                    startIndex: currentSearchIndex,
+                    maxResults: resultsPerPage
+                }
+            }).done(function(data) {
+                if (data) {
+                    let totalItems = data.totalItems;
+                    let items = data.items;
+                    resultElement.innerHTML = "We found " + totalItems + " books matching your search criteria: " + searchText
+                    console.log(data);
+                    addBooks(items)
+                    //Update the current search index
+                    currentSearchIndex += resultsPerPage;
+                }
+            });
+        }
+
+        //Search for books
+        function searchForBooks() {
+            var inputElement = document.forms["searchForm"]["searchText"];
+            var searchText = inputElement.value;
+            performSearch(searchText);
+            inputElement.value = "";
+            previousSearch = searchText;
+        }
+
+        //Handle form search
+    </script>
+
+    <script>
+        function addBooks(items) {
+            var sectionContent = ""
+            items.forEach(function(item) {
+                var html = `
+        <div class="bookListItem">
+            <div class="bookImageBox">
+                <img class="bookImage" src="${("imageLinks" in item.volumeInfo) ? item.volumeInfo.imageLinks.thumbnail : "" }" alt="book-image">
+            </div>
+            <a onclick="getBookDetails('${item.id}')" href="#">
+                <h2>${item.volumeInfo.title}</h2>
+            </a>
+            <p>${("authors" in item.volumeInfo) ? item.volumeInfo.authors[0] : ""}</p>
+            <p>${("publisher" in item.volumeInfo) ? item.volumeInfo.publisher : ""}</p>
+            <p>${("pageCount" in item.volumeInfo) ? item.volumeInfo.pageCount : "0"} pages</p>
+        </div>
+`
+                sectionContent += html
+            })
+
+            //Set Values for Book Object
+            document.getElementById("searchContent").innerHTML = sectionContent
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "https://www.googleapis.com/books/v1/users/102974264965783572017/bookshelves/1001/volumes",
+                type: "GET",
+                data: {
+                    key: API_KEY
+                }
+            }).done(function(data) {
+                if (data) {
+                    let totalItems = data.totalItems;
+                    let items = data.items;
+                    console.log(data);
+                    addBookshelfBooks(items)
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function addBookshelfBooks(items) {
+            var sectionContent = ""
+            items.forEach(function(item) {
+                var html = `
+        <div class="bookListItem">
+            <div class="bookImageBox">
+                <img class="bookImage" src="${("imageLinks" in item.volumeInfo) ? item.volumeInfo.imageLinks.thumbnail : "" }" alt="book-image">
+            </div>
+            <a onclick="getBookDetails('${item.id}')" href="#">
+                <h2>${item.volumeInfo.title}</h2>
+            </a>
+            <p>${("authors" in item.volumeInfo) ? item.volumeInfo.authors[0] : ""}</p>
+            <p>${("publisher" in item.volumeInfo) ? item.volumeInfo.publisher : ""}</p>
+            <p>${("pageCount" in item.volumeInfo) ? item.volumeInfo.pageCount : "0"} pages</p>
+        </div>
+`
+                sectionContent += html
+            })
+
+            //Set Values for Book Object
+            document.getElementById("bookshelfContent").innerHTML = sectionContent
+        }
+    </script>
+
+    <script>
+        function getBookDetails(bookId) {
+            console.log("Searching For Book Id: " + bookId)
+            $.ajax({
+                url: "https://www.googleapis.com/books/v1/volumes/" + bookId,
+                type: "GET",
+                data: {
+                    key: API_KEY
+                }
+            }).done(function(item) {
+                if (item) {
+                    console.log(item);
+
+                    var bookContent = ""
+                    var html = `
+        <div>
+            <img class="resultRightImage" id="book_image" src="${("imageLinks" in item.volumeInfo) ? item.volumeInfo.imageLinks.thumbnail : "" }" alt="book-image">
+            <div>
+                <h2 id="title">${item.volumeInfo.title}</h2>
+                <h4 id="author">${("authors" in item.volumeInfo) ? item.volumeInfo.authors[0] : ""}</h4>
+                <div id="description" style="max-height: 50px; overflow: hidden;">${("description" in item.volumeInfo) ? item.volumeInfo.description : ""}</div>
+                <p id="publisher">${("publisher" in item.volumeInfo) ? item.volumeInfo.publisher : ""}</p>
+                <p id="rating">${("averageRating" in item.volumeInfo) ? item.volumeInfo.averageRating : ""}</p>
+                <p id="pages">${("pageCount" in item.volumeInfo) ? item.volumeInfo.pageCount : "0"} pages</p>
+            </div>
+            <h3><a onclick="closeBookDetails()" href="#">Close</a></h3>
+        </div>
+`
+                    bookContent += html
+
+                    //Set Values for Book Object
+                    document.getElementById("resultsBarContent").innerHTML = bookContent
+
+
+                }
+            });
+        }
+
+        function closeBookDetails() {
+            //Set Values for Book Object
+            document.getElementById("resultsBarContent").innerHTML = ""
+        }
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li class="logo">Milestone 3</li>
+                <li><a class="active" href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="bookSearchContainer">
+        <div class="contentContainer">
+            <!-- Search -->
+            <div style="padding: 25px;">
+                <header>
+                    <h2>Search</h2>
+
+                    <form name="searchForm">
+                        <input type="text" name="searchText" />
+                        <input type="button" value="Search" onclick="searchForBooks()">
+                    </form>
+                </header>
+
+                <p id="searchResult">Search for a book above!</p>
+                <p id="currentPage">Current Page: 0</p>
+            </div>
+
+            <div class="paging-options">
+                <div id="pageNumberOptions">
+                    <a href="#" class="pageButtonOption" onclick="navigateToPage(0)">1</a>
+                    <a href="#" class="pageButtonOption" onclick="navigateToPage(1)">2</a>
+                    <a href="#" class="pageButtonOption" onclick="navigateToPage(2)">3</a>
+                    <a href="#" class="pageButtonOption" onclick="navigateToPage(3)">4</a>
+                    <a href="#" class="pageButtonOption" onclick="navigateToPage(4)">5</a>
+                </div>
+            </div>
+
+            <section id="searchContent">
+
+            </section>
+
+        </div>
+
+
+        <div class="contentContainer">
+            <!-- Bookshelf -->
+
+            <h2>My Bookshelf</h2>
+
+            <section id="bookshelfContent">
+
+            </section>
+
+        </div>
+
+
+    </section>
+
+    <div id="resultsBar">
+
+        <div id="resultsBarContent" class="bookContent">
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

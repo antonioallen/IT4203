@@ -38,7 +38,7 @@
                         $("#publisher").text(data.volumeInfo.publisher)
                         $("#description").text(data.volumeInfo.description)
                         $("#rating").text(data.volumeInfo.averageRating)
-                        $("#pages").text(data.volumeInfo.pageCount+" pages")
+                        $("#pages").text(data.volumeInfo.pageCount + " pages")
                         $("#book_image").attr('src', ("imageLinks" in data.volumeInfo) ? data.volumeInfo.imageLinks.thumbnail : "")
 
                     }
