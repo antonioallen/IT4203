@@ -1,0 +1,116 @@
+/* Grid! */
+
+.search {
+    padding: 30px
+}
+
+.moviesContainer {}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    align-items: stretch;
+}
+
+.grid > article {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.grid > article img {
+    max-width: 100%;
+}
+
+.text {
+    padding: 0 20px 20px;
+}
+
+.text > button {
+    background: gray;
+    border: 0;
+    color: white;
+    padding: 10px;
+    width: 100%;
+}
+
+html body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html body .container-fluid.body-content {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+
+.detailContent{
+    position: absolute;
+    top: 60px;
+    bottom: 0px;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    /* Set the fixed height of the footer here */
+    line-height: 60px;
+    /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
+.pagination {
+    position: absolute;
+    margin: auto;
+    width: 175px;
+    height: 40px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.movieContent {
+    position: absolute;
+    bottom: 0;
+}
+
+.acoordian {
+    padding-bottom: 24px;
+}
+
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.ellipsis {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 5; /* number of lines to show */
+   line-height: X;        /* fallback */
+   max-height: X*N;       /* fallback */
+}
+
+.review {
+    padding: 24px;
+}

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="moviedetail.js"></script>
     <title>Term Project</title>
 
     <!-- Bootstrap core CSS -->
@@ -32,55 +32,59 @@
                         <a class="nav-link" href="./index.html">Home
                 <span class="sr-only">(current)</span>
               </a>
-                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Page Content -->
-    <div class="container container-fluid body-content">
+    <div class="container detailContent">
         <div class="row">
             <div class="col-lg-12">
-
-                <div class="input-group mb-3 search">
-                    <input id="searchInput" type="text" class="form-control" placeholder="Search for movies" aria-label="Search for movies" aria-describedby="searchButton">
-                    <div class="input-group-append">
-                        <button onclick="searchForMovie()" class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                <div class="card mb-3">
+                    <img class="card-img-top" src="" id="movieImage">
+                    <div class="card-body">
+                        <h5 class="card-title" id="movieTitle"></h5>
+                        <p class="card-text" id="movieDescription"></p>
+                        <p class="card-text" id="movieTagline"><small class="text-muted"></small></p>
                     </div>
                 </div>
 
-                <h3 id="labelContent">Popular Movies</h3>
-                <main class="grid moviesContainer" id="movieContent">
+                <div class="accordion acoordian" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h3 id="castLabel">Cast</h3>
+        </button>
+                            </h5>
+                        </div>
 
-                </main>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <main class="grid moviesContainer" id="castContent">
+
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><h3 id="reviewLabel">Reviews</h3>
+          
+        </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-                    </li>
-                    <li class="page-item"><a onclick="searchForMovie(1)" class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a onclick="searchForMovie(2)" class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a onclick="searchForMovie(3)" class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </footer>
 
     <!-- Bootstrap core JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -89,16 +93,7 @@
     <script>
         //On Document Loaded
         $(document).ready(function() {
-            getPopularMovies(1)
-
-            var searchInput = document.getElementById("searchInput");
-
-            searchInput.addEventListener("keyup", function(event) {
-                event.preventDefault();
-                if (event.keyCode === 13) {
-                    document.getElementById("searchButton").click();
-                }
-            });
+            getMovie()
         });
     </script>
 </body>
